@@ -3,14 +3,13 @@
   "builds": [
     {
       "src": "server.js",
-      "use": "@vercel/node"
+      "use": "@vercel/node",
+      "config": {
+        "includeFiles": ["views/**"]
+      }
     },
     {
       "src": "public/**",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "views/**",
       "use": "@vercel/static"
     }
   ],
