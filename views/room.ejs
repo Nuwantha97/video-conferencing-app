@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Video Conferencing App</title>
+        <link 
+        rel="stylesheet" 
+        href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+        />
+        <link rel="stylesheet" href="style.css"/>
+        <script src="https://unpkg.com/peerjs@1.5.0/dist/peerjs.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/peerjs/1.5.0/peer.min.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
+        <script>
+            const ROOM_ID = "<%= roomId %>";
+        </script>
+    </head>
+    <body>
+        <audio id="chatAudio" src="chat_request.mp3"></audio>
+        <div class="overlay" onclick="hideInvitePopuop()"></div>
+        <div class="invitePopup">
+            <input type="text" value="..." id="roomLink" readonly />
+            <button onclick="copyToClipboard()">Copy</button>
+        </div>
+        <div class="main">
+            <div class="main__left">
+                <!-- Video area -->
+                <div class="main__videos">
+                    <div id="video-grid"></div>
+                </div>
+                <div class="main__controls">
+                    <div class="main__controls__block">
+                        <div
+                            class="main__controls__button"
+                            id="muteButton"
+                            onclick="muteUnmute()"
+                        >
+                            <i class="fa fa-microphone"></i>
+                            <span>Mute</span>
+                        </div>
+                        <div
+                            class="main__controls__button"
+                            id="playPauseVideo"
+                            onclick="playStop()"
+                        >
+                            <i class="fa fa-video-camera"></i>
+                            <span>Stop Video</span>
+                        </div>
+                </div>
+                <div class="main__controls__block">
+                    <div
+                        class="main__controls__button"
+                        id="chat_Btn"
+                        onclick="ShowChat(this)"
+                    >
+                        <i class="fa fa-comment"></i>
+                        <span>Chat</span>
+                    </div>
+                    <div class="main__controls__button" onclick="showInvitePopuop()">
+                        <i class="fa fa-user-plus"></i>
+                        <span>Invite people</span>
+                    </div>
+                </div>
+                </div>
+            </div>
+            <div class="main__right">
+                <!-- chat area -->
+                <div class="main__header">
+                    <h6><span class="live"></span>LIVE CHAT</h6>
+                </div>
+                <div class="main__chat_window" id="main__chat__window">
+                    <ul class="messages" id="all__messages"></ul>
+                </div>
+                <div class="main__message__container">
+                    <input
+                        type="text"
+                        id="chat__message"
+                        placeholder="Type message & press enter"
+                    />
+                    <button class="sendMsg" id="sendMsg">
+                        <i class="fa fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <script src="script.js"></script>
+    </body>
+</html>
