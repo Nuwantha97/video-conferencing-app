@@ -3,6 +3,7 @@ const app = express();
 const server = require("http").createServer(app);
 const { v4: uuidV4 } = require("uuid");
 const io = require("socket.io")(server);
+const path = require('path');
 
 const PORT = process.env.PORT || 3000;
 
@@ -14,6 +15,7 @@ const peerServer = ExpressPeerServer(server, {
 });
 
 app.use("/peerjs", peerServer);
+app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 app.use(express.static("public"));
 
