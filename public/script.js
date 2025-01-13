@@ -7,7 +7,11 @@ const videoGrid = document.getElementById("video-grid");
 const myVideo = document.createElement("video");
 myVideo.muted = true;
 
-var peer = new Peer({
+var peer = new Peer(undefined,{
+    path: "/peerjs",
+    host: '/',
+    port: '443',
+    secure: true,
     config: {
         iceServers: [
             { urls: 'stun:stun.l.google.com:19302' },

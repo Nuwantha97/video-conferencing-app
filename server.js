@@ -9,6 +9,8 @@ const PORT = process.env.PORT || 3000;
 const { ExpressPeerServer } = require("peer");
 const peerServer = ExpressPeerServer(server, {
     debug: true,
+    path: "/peerjs",
+    allow_discovery: true
 });
 
 app.use("/peerjs", peerServer);
