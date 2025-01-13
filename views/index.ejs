@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Conferencing App</title>
+    <link rel="stylesheet" href="/style.css">
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
+</head>
+<body>
+    <div class="main-container">
+        <header>
+            <h1>Video Conferencing</h1>
+        </header>
+        <main>
+            <div class="join-container">
+                <h2>Join or Create a Meeting</h2>
+                <form action="/room" method="POST">
+                    <button type="submit" class="create-btn">Create New Meeting</button>
+                </form>
+                <div class="join-section">
+                    <h3>Join Existing Meeting</h3>
+                    <form action="/join" method="GET">
+                        <input type="text" name="roomId" placeholder="Enter Room ID" required>
+                        <button type="submit" class="join-btn">Join Meeting</button>
+                    </form>
+                </div>
+            </div>
+        </main>
+        <footer>
+            <p>&copy; Video Conferencing App</p>
+        </footer>
+    </div>
+    <script src="/script.js"></script>
+</body>
+</html>

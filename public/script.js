@@ -210,27 +210,42 @@ const ShowChat = (e) => {
     e.classList.toggle("active");
     document.body.classList.toggle("ShowChat");
 }
-const showInvitePopuop = () => {
-    document.body.classList.add("ShowInvite");
-    document.getElementById("roomLink").value = window.location.href;
-};
 
-const hideInvitePopuop = () => {
-    document.body.classList.remove("ShowInvite");
-};
+function showInvitePopuop() {
+    const overlay = document.querySelector('.overlay');
+    const popup = document.querySelector('.invitePopup');
+    const roomLink = document.getElementById('roomLink');
+    
+    // Set the current URL as the room link
+    roomLink.value = window.location.href;
+    
+    // Show overlay and popup
+    overlay.classList.add('active');
+    popup.classList.add('active');
+}
 
-const copyToClipboard = () => {
-    var copyText = document.getElementById("roomLink");
+function hideInvitePopuop() {
+    const overlay = document.querySelector('.overlay');
+    const popup = document.querySelector('.invitePopup');
+    
+    // Hide overlay and popup
+    overlay.classList.remove('active');
+    popup.classList.remove('active');
+}
 
-    copyText.select();
-    copyText.setSelectionRange(0, 99999);
-
-    document.execCommand("copy");
-
-    alert("Copied: " + copyText.value);
-
-    hideInvitePopuop();
-};
+function copyToClipboard() {
+    const roomLink = document.getElementById('roomLink');
+    roomLink.select();
+    document.execCommand('copy');
+    
+    // Optional: Show feedback that link was copied
+    const button = document.querySelector('.invitePopup button');
+    const originalText = button.textContent;
+    button.textContent = 'Copied!';
+    setTimeout(() => {
+        button.textContent = originalText;
+    }, 2000);
+}
 
 const playChatSound = () => {
     const chatAudio = document.getElementById("chatAudio");
