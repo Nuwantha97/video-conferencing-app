@@ -1,4 +1,8 @@
-const socket = io("/");
+const socket = io("/", {
+    transports: ['websocket', 'polling'],
+    reconnectionAttempts: 3,
+    timeout: 20000
+});
 const chatInputBox = document.getElementById("chat__message");
 const all_messages = document.getElementById("all__messages");
 const leave_meeting = document.getElementById("leave-meeting");
@@ -13,17 +17,14 @@ var peer = new Peer({
             { urls: 'stun:stun.l.google.com:19302' },
             { urls: 'stun:global.stun.twilio.com:3478' }
         ]
-    }
+    },
+    debug: 0
 });
 
 let myVideoStream;
 let currentUserId;
 let pendingMsg = 0;
 let peers = {};
-var getUserMedia =
-    navigator.getUserMedia ||
-    navigator.webkitGetUserMedia ||
-    navigator.mozGetUserMedia;
 
 navigator.mediaDevices.getUserMedia({
     video: true,
@@ -35,13 +36,10 @@ navigator.mediaDevices.getUserMedia({
     peer.on("call", (call) => {
         call.answer(stream);
         const video = document.createElement("video");
-        
         call.on("stream", (userVideoStream) => {
             addVideoStream(video, userVideoStream);
-            console.log(peers);
         });
     });
-
 
     socket.on("user-connected", (userId) => {
         connectToNewUser(userId, stream);
@@ -79,7 +77,6 @@ navigator.mediaDevices.getUserMedia({
     });
 
     socket.on("createMessage", (message) => {
-        console.log(message);
         let li = document.createElement("li");
         if (message.user != currentUserId) {
             li.classList.add("otherUser");
@@ -102,20 +99,6 @@ navigator.mediaDevices.getUserMedia({
 
 });
 
-peer.on("call", function (call) {
-    getUserMedia({ video: true, audio: true }, function (stream) {
-        call.answer(stream);
-        const video = document.createElement("video");
-        call.on("stream", function (remoteStream) {
-            addVideoStream(video, remoteStream);
-        });
-    },
-    function (err) {
-        console.log("Failed to get local stream", err);
-    }
-);
-});
-
 peer.on("open", (id) => {
     currentUserId = id;
     socket.emit("join-room", ROOM_ID, id);
@@ -128,11 +111,9 @@ socket.on("disconnect", function () {
 //CHAT
 const connectToNewUser = (userId, stream) => {
     var call = peer.call(userId, stream);
-    console.log(call);
     var video = document.createElement("video");
 
     call.on("stream", (userVideoStream) => {
-        console.log(userVideoStream);
         addVideoStream(video, userVideoStream, userId);
     });
 
