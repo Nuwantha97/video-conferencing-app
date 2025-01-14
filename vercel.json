@@ -12,6 +12,14 @@
     ],
     "routes": [
         {
+            "src": "/socket.io/(.*)",
+            "dest": "server.js"
+        },
+        {
+            "src": "/peerjs/(.*)",
+            "dest": "server.js"
+        },
+        {
             "src": "/public/(.*)",
             "dest": "/public/$1"
         },

@@ -1,13 +1,30 @@
 const express = require("express");
 const app = express();
-const server = require("http").createServer(app);
-const { v4: uuidv4 } = require("uuid");
-const io = require("socket.io")(server);
-const path = require("path");
+const server = require("http").Server(app);
+const io = require("socket.io")(server, {
+    cors: {
+        origin: '*',
+        methods: ['GET', 'POST']
+    },
+    transports: ['websocket', 'polling'],
+    path: '/socket.io'
+});
 
 const { ExpressPeerServer } = require("peer");
+const { v4: uuidv4 } = require("uuid");
+const path = require("path");
+
+// Configure PeerServer
 const peerServer = ExpressPeerServer(server, {
     debug: true,
+    path: '/peerjs',
+    ssl: {},
+    proxied: true,
+    allow_discovery: true,
+    cleanup_out_msgs: 1000,
+    alive_timeout: 60000,
+    key: 'peerjs',
+    concurrent_limit: 5000
 });
 
 app.use("/peerjs", peerServer);

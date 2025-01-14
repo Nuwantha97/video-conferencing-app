@@ -1,4 +1,10 @@
-const socket = io("/");
+const socket = io('/', {
+    transports: ['websocket'],
+    secure: true,
+    reconnection: true,
+    rejectUnauthorized: false,
+    reconnectionAttempts: 10
+});
 const chatInputBox = document.getElementById("chat__message");
 const all_messages = document.getElementById("all__messages");
 const leave_meeting = document.getElementById("leave-meeting");
@@ -7,13 +13,25 @@ const videoGrid = document.getElementById("video-grid");
 const myVideo = document.createElement("video");
 myVideo.muted = true;
 
-var peer = new Peer({
+var peer = new Peer(undefined, {
+    host: 'video-conferencing-app-ehdw.vercel.app', // Change this based on your deployment
+    secure: true, // Important for HTTPS
+    port: '443', // Standard HTTPS port
+    path: '/peerjs',
     config: {
-        iceServers: [
+        'iceServers': [
             { urls: 'stun:stun.l.google.com:19302' },
-            { urls: 'stun:global.stun.twilio.com:3478' }
+            { urls: 'stun:stun1.l.google.com:19302' },
+            { urls: 'stun:global.stun.twilio.com:3478' },
+            // Add TURN servers for better connectivity
+            {
+                urls: 'turn:numb.viagenie.ca',
+                credential: 'muazkh',
+                username: 'webrtc@live.com'
+            }
         ]
-    }
+    },
+    debug: 3
 });
 
 let myVideoStream;
