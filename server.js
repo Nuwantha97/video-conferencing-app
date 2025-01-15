@@ -2,15 +2,7 @@ const express = require("express");
 const app = express();
 const server = require("http").createServer(app);
 const { v4: uuidV4 } = require("uuid");
-const io = require("socket.io")(server, {
-    pingTimeout: 60000,
-    cors: {
-        origin: "*",
-        methods: ["GET", "POST"]
-    },
-    transports: ['websocket', 'polling'],
-    allowEIO3: true
-});
+const io = require("socket.io")(server);
 const path = require('path');
 
 const PORT = process.env.PORT || 3000;
